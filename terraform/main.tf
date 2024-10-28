@@ -250,3 +250,139 @@ resource "docker_container" "dataloop-prometheus" {
     container_path = "/etc/prometheus/prometheus.yml"  # Path inside the container
   }
 }
+# Define the Grafana Docker image
+resource "docker_image" "grafana" {
+  name = "grafana/grafana:latest"  # Consider specifying a version instead of latest for stability
+}
+
+# Create a Grafana container
+resource "docker_container" "dataloop-grafana" {
+  image = docker_image.grafana.image_id
+  name  = "dataloop-grafana"
+
+  ports {
+    internal = 3000   # Port inside the container
+    external = 3666   # Port exposed to the host
+  }
+
+  networks_advanced {
+    name         = docker_network.dataloop_network.name
+    ipv4_address = "172.18.0.12"  # Ensure this IP does not conflict with other devices
+  }
+
+  restart = "always"  # Automatically restart the container on failure
+}
+
+# Define the Dashy Docker image
+resource "docker_image" "dashy" {
+  name = "lissy93/dashy:latest"  # Again, consider using a specific version
+}
+
+# Create a Dashy container
+resource "docker_container" "dataloop-dashy" {
+  image = docker_image.dashy.image_id
+  name  = "dataloop-dashy"
+
+  ports {
+    internal = 8080   # Port inside the container
+    external = 14500  # Port exposed to the host
+  }
+
+  volumes {
+    host_path      = abspath("${path.module}/../dashy/config")  # Path to Dashy config on the host
+    container_path = "/app/data"  # Path in the container
+  }
+
+  networks_advanced {
+    name         = docker_network.dataloop_network.name
+    ipv4_address = "172.18.0.13"  # Ensure this IP does not conflict
+  }
+
+  restart = "always"  # Automatically restart the container on failure
+}
+
+# Define the HAProxy Docker image
+resource "docker_image" "haproxy" {
+  name = "haproxy:latest"  # Consider specifying a version for stability
+}
+
+# Create a HAProxy container
+resource "docker_container" "dataloop-haproxy" {
+  image = docker_image.haproxy.image_id
+  name  = "dataloop-haproxy"
+
+  volumes {
+    host_path      = abspath("${path.module}/../haproxy/haproxy.cfg")  # Path to HAProxy config on the host
+    container_path = "/usr/local/etc/haproxy/haproxy.cfg"  # Path in the container
+  }
+
+  ports {
+    internal = 80    # Port inside the container
+    external = 8090  # Port exposed to the host
+  }
+
+  networks_advanced {
+    name         = docker_network.dataloop_network.name
+    ipv4_address = "172.18.0.200"  # Ensure this IP does not conflict
+  }
+
+  restart = "always"  # Automatically restart the container on failure
+}
+
+# Define the MongoDB Docker image for Rocket.Chat
+resource "docker_image" "rocketchat_mongodb" {
+  name = "mongo:4.4"  # Using a specific version for stability
+}
+
+# Create a MongoDB container for Rocket.Chat
+resource "docker_container" "rocketchat-mongodb" {
+  image = docker_image.rocketchat_mongodb.image_id
+  name  = "rocketchat-mongodb"
+
+  ports {
+    internal = 27017   # Port inside the container
+    external = 27019   # Port exposed to the host
+  }
+
+  env = [
+    "MONGO_INITDB_ROOT_USERNAME=admin",  # MongoDB username
+    "MONGO_INITDB_ROOT_PASSWORD=password",  # MongoDB password
+  ]
+
+  networks_advanced {
+    name         = docker_network.dataloop_network.name
+    ipv4_address = "172.18.0.30"  # Ensure this IP does not conflict
+  }
+
+  restart = "always"  # Automatically restart the container on failure
+}
+
+# Define the Rocket.Chat Docker image
+resource "docker_image" "rocketchat" {
+  name = "rocketchat/rocket.chat:latest"  # Consider specifying a version
+}
+
+# Create a Rocket.Chat container
+resource "docker_container" "rocketchat" {
+  image = docker_image.rocketchat.image_id
+  name  = "rocketchat"
+
+  ports {
+    internal = 3000   # Port inside the container
+    external = 3003   # Port exposed to the host
+  }
+
+  env = [
+    "MONGO_URL=mongodb://admin:password@rocketchat-mongodb:27017/rocketchat?authSource=admin",  # Connection string for MongoDB
+    "ROOT_URL=http://localhost:3000",  # Root URL for Rocket.Chat
+    "PORT=3000",  # Port Rocket.Chat will run on
+  ]
+
+  networks_advanced {
+    name         = docker_network.dataloop_network.name
+    ipv4_address = "172.18.0.40"  # Ensure this IP does not conflict
+  }
+
+  restart = "always"  # Automatically restart the container on failure
+}
+
