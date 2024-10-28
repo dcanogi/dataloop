@@ -1,0 +1,101 @@
+# Title and version of the Dataloop Dashboard configuration
+title: "Dataloop Dashboard"
+version: "1.0"
+
+# Definition of widgets that will be displayed on the dashboard
+widgets:
+  # Link to the first Dataloop API
+  - type: "link"  # Widget type is a link
+    name: "Dataloop API 1"  # Display name for the link
+    url: "http://dataloop-api-backend-0:8080"  # URL the link points to
+    icon: "fa-solid fa-code"  # FontAwesome icon class for the link
+
+  # Link to the second Dataloop API
+  - type: "link"
+    name: "Dataloop API 2"
+    url: "http://dataloop-api-backend-1:8080"
+    icon: "fa-solid fa-code"
+
+  # Link to the third Dataloop API
+  - type: "link"
+    name: "Dataloop API 3"
+    url: "http://dataloop-api-backend-2:8080"
+    icon: "fa-solid fa-code"
+    
+  # Link to the first Frontend Nginx server
+  - type: "link"
+    name: "Frontend Nginx 1"
+    url: "http://localhost:8181"  # URL for the Nginx frontend
+    icon: "fa-solid fa-globe"  # Icon representing a globe for web links
+
+  # Link to the second Frontend Nginx server
+  - type: "link"
+    name: "Frontend Nginx 2"
+    url: "http://localhost:8182"
+    icon: "fa-solid fa-globe"
+    
+  # Link to the first Kafka server
+  - type: "link"
+    name: "Kafka 1"
+    url: "http://localhost:9092"  # URL for the Kafka server
+    icon: "fa-solid fa-comments"  # Icon representing messaging
+
+  # Link to the second Kafka server
+  - type: "link"
+    name: "Kafka 2"
+    url: "http://localhost:9093"
+    icon: "fa-solid fa-comments"
+    
+  # Link to the first MongoDB instance
+  - type: "link"
+    name: "MongoDB 1"
+    url: "http://localhost:27000"  # URL for the MongoDB instance
+    icon: "fa-solid fa-database"  # Icon representing a database
+
+  # Link to the second MongoDB instance
+  - type: "link"
+    name: "MongoDB 2"
+    url: "http://localhost:27001"
+    icon: "fa-solid fa-database"
+
+  # Link to the Prometheus monitoring tool
+  - type: "link"
+    name: "Prometheus"
+    url: "http://localhost:9090"  # URL for Prometheus
+    icon: "fa-solid fa-chart-line"  # Icon representing monitoring charts
+
+  # Link to the Grafana dashboard
+  - type: "link"
+    name: "Grafana"
+    url: "http://localhost:3666"  # URL for Grafana
+    icon: "fa-solid fa-chart-bar"  # Icon representing bar charts
+
+  # Link to the Jenkins continuous integration tool
+  - type: "link"
+    name: "Jenkins"
+    url: "http://localhost:8087"  # URL for Jenkins
+    icon: "fa-solid fa-tools"  # Icon representing tools
+
+  # Link to the HAProxy load balancer
+  - type: "link"
+    name: "HAProxy"
+    url: "http://localhost:8090"  # URL for HAProxy
+    icon: "fa-solid fa-random"  # Icon representing load balancing
+
+  # Link to the first ML Serving instance
+  - type: "link"
+    name: "ML Serving 1"
+    url: "http://localhost:8501"  # URL for the first ML Serving instance
+    icon: "fa-solid fa-brain"  # Icon representing AI/ML
+
+  # Link to the second ML Serving instance
+  - type: "link"
+    name: "ML Serving 2"
+    url: "http://localhost:8502"
+    icon: "fa-solid fa-brain"
+
+  # Link to the Dashy dashboard
+  - type: "link"
+    name: "Dashy"
+    url: "http://localhost:14500"  # URL for Dashy
+    icon: "fa-solid fa-th"  # Icon representing a grid or dashboard
